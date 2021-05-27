@@ -8,6 +8,6 @@ for x86-64
 > Should need nightly?
 
 ### TODO:
-- [  ] Port to new `asm!` Macro
+- [  ] Port to new `asm!` Macro ### Needs some investigating. Throws ACCESS_VIOLATIONs at Runtime (not with llvm_asm)
 - [  ] arm support
 - [x] use vec.into_boxed_slice() to avoid reallocation problem
