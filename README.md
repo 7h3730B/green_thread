@@ -11,3 +11,6 @@ for x86-64
 - [  ] Port to new `asm!` Macro ### Needs some investigating. Throws ACCESS_VIOLATIONs at Runtime (not with llvm_asm)
 - [  ] arm support
 - [x] use vec.into_boxed_slice() to avoid reallocation problem
+- [  ] Windows support: https://cfsamson.gitbook.io/green-threads-explained-in-200-lines-of-rust/supporting-windows
+    - [  ] Add floating point registers to be call safe
+    - [  ] Change the stack layout for windows
