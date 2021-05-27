@@ -10,3 +10,4 @@ for x86-64
 ### TODO:
 - [  ] Port to new `asm!` Macro
 - [  ] arm support
+- [  ] use vec.into_boxed_slice() to avoid reallocation problem

@@ -1,21 +1,51 @@
 use green_thread::*;
+use std::ptr;
 
-fn hello() -> ! {
-    println!("Hey, from our new stack");
-
-    loop {}
-}
+const DEFAULT_STACK_SIZE: usize = 1024 * 1024 * 2;
 
 fn main() {
-    let mut ctx = ThreadContext::default();
-    let mut stack = vec![0_u8; SSIZE as usize];
+    let mut runtime = Runtime::new(DEFAULT_STACK_SIZE);
+    runtime.init();
 
-    unsafe {
-        let stack_bottom = stack.as_mut_ptr().offset(SSIZE);
-        let sb_aligned = (stack_bottom as usize & !15) as *mut u8;
-        std::ptr::write(sb_aligned.offset(-16) as *mut u64, hello as u64);
-        ctx.rsp = sb_aligned.offset(-16) as u64;
+    runtime.spawn(|| {
+        println!("THREAD 1 STARTING");
+        let id = 1;
+        for i in 0..10 {
+            println!("thread: {} counter: {}", id, i);
+            yield_thread();
+        }
+        println!("THREAD 1 FINISHED");
+    });
 
-        gt_switch(&mut ctx);
-    }
+    runtime.spawn(|| {
+        println!("THREAD 2 STARTING");
+        let id = 2;
+        for i in 0..15 {
+            println!("thread: {} counter: {}", id, i);
+            yield_thread();
+        }
+        println!("THREAD 2 FINISHED");
+    });
+
+    runtime.spawn(|| {
+        println!("THREAD 3 STARTING");
+        let id = 3;
+        for i in 0..15 {
+            println!("thread: {} counter: {}", id, i);
+            yield_thread();
+        }
+        println!("THREAD 3 FINISHED");
+    });
+
+    runtime.spawn(|| {
+        println!("THREAD 3 STARTING");
+        let id = 4;
+        for i in 0..15 {
+            println!("thread: {} counter: {}", id, i);
+            yield_thread();
+        }
+        println!("THREAD 4 FINISHED");
+    });
+
+    runtime.run();
 }
