@@ -12,7 +12,7 @@ impl Runtime {
     pub fn new(stack_size: usize) -> Self {
         let threads: Vec<Thread> = vec![Thread {
             id: 0,
-            stack: vec![0_u8; stack_size],
+            stack: vec![0_u8; stack_size].into_boxed_slice(),
             ctx: ThreadContext::default(),
             state: State::Running,
         }];
@@ -164,7 +164,7 @@ enum State {
 #[derive(Debug)]
 struct Thread {
     pub id: usize,
-    pub stack: Vec<u8>,
+    pub stack: Box<[u8]>,
     pub ctx: ThreadContext,
     pub state: State,
 }
@@ -173,7 +173,7 @@ impl Thread {
     fn new(id: usize, stack_size: usize) -> Self {
         Thread {
             id,
-            stack: vec![0_u8; stack_size],
+            stack: vec![0_u8; stack_size].into_boxed_slice(),
             ctx: ThreadContext::default(),
             state: State::Available,
         }

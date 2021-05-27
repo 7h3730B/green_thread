@@ -1,5 +1,5 @@
 use green_thread::*;
-use std::ptr;
+use std::{ptr, thread::sleep, time::Duration};
 
 const DEFAULT_STACK_SIZE: usize = 1024 * 1024 * 2;
 
@@ -35,16 +35,6 @@ fn main() {
             yield_thread();
         }
         println!("THREAD 3 FINISHED");
-    });
-
-    runtime.spawn(|| {
-        println!("THREAD 3 STARTING");
-        let id = 4;
-        for i in 0..15 {
-            println!("thread: {} counter: {}", id, i);
-            yield_thread();
-        }
-        println!("THREAD 4 FINISHED");
     });
 
     runtime.run();
